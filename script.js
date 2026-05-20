@@ -365,8 +365,8 @@ themeToggle.addEventListener('click', () => {
   document.body.classList.toggle('light-theme');
   const isLight = document.body.classList.contains('light-theme');
   if (isLight) {
-    navLogo.src = './Logo.png';
-    if (footerLogo) footerLogo.src = './Logo.png';
+    navLogo.src = './logo.png';
+    if (footerLogo) footerLogo.src = './logo.png';
   } else {
     navLogo.src = './logo-dark.png';
     if (footerLogo) footerLogo.src = './logo-dark.png';
