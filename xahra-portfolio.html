@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xahra — One Pace at a Time</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,700;0,800;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #010066;
+  --gold: #CBA135;
+  --gold-dim: rgba(203,161,53,0.4);
+  --gold-glow: rgba(203,161,53,0.15);
+  --purple: #3D1A8C;
+  --teal: #0D7A6B;
+  --white: #FFFFFF;
+  --water-deep: #000820;
+  --water-mid: #010840;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--water-deep);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--white);
+  overflow-x: hidden;
+}
+
+/* ── Canvases ── */
+#caustic-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+#bubble-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ── Content ── */
+.site {
+  position: relative;
+  z-index: 2;
+}
+
+/* ── Nav ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 48px;
+  background: linear-gradient(to bottom, rgba(0,8,32,0.8) 0%, transparent 100%);
+}
+
+.nav-mark {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.nav-mark svg {
+  width: 28px;
+  height: 28px;
+  color: var(--gold);
+  filter: drop-shadow(0 0 8px rgba(203,161,53,0.5));
+}
+
+.nav-brand {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.nav-links {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.55);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover { color: var(--gold); }
+
+/* ── Hero ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 120px 40px 80px;
+  position: relative;
+}
+
+.hero-depth-line {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 120px;
+  background: linear-gradient(to bottom, transparent, rgba(203,161,53,0.3));
+}
+
+.hero-node {
+  width: 72px;
+  height: 72px;
+  margin-bottom: 48px;
+  animation: breathe 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px rgba(203,161,53,0.6)) drop-shadow(0 0 40px rgba(203,161,53,0.3));
+  color: var(--gold);
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(203,161,53,0.6)) drop-shadow(0 0 40px rgba(203,161,53,0.3)); }
+  50% { transform: scale(1.04); filter: drop-shadow(0 0 30px rgba(203,161,53,0.8)) drop-shadow(0 0 60px rgba(203,161,53,0.4)); }
+}
+
+.hero-eyebrow {
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 1s ease forwards 0.3s;
+}
+
+.hero-title {
+  font-size: clamp(56px, 10vw, 120px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+  color: var(--white);
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: fadeUp 1s ease forwards 0.5s;
+}
+
+.hero-tagline {
+  font-size: clamp(15px, 2vw, 19px);
+  font-weight: 300;
+  font-style: italic;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.05em;
+  margin-bottom: 64px;
+  opacity: 0;
+  animation: fadeUp 1s ease forwards 0.7s;
+}
+
+.hero-tagline em {
+  font-style: normal;
+  color: var(--gold);
+  font-weight: 400;
+}
+
+.scroll-cue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  animation: fadeUp 1s ease forwards 1.2s;
+}
+
+.scroll-cue span {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+}
+
+.scroll-line {
+  width: 1px;
+  height: 48px;
+  background: linear-gradient(to bottom, var(--gold-dim), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.4; transform: scaleY(1); }
+  50% { opacity: 1; transform: scaleY(1.15); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Depth Divider ── */
+.depth-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 48px;
+  gap: 20px;
+  opacity: 0.25;
+}
+
+.depth-divider::before,
+.depth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold));
+}
+
+.depth-divider::after {
+  background: linear-gradient(to left, transparent, var(--gold));
+}
+
+.depth-label {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+/* ── Philosophy Section ── */
+.philosophy {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 48px;
+  position: relative;
+}
+
+.philosophy-inner {
+  max-width: 800px;
+  text-align: center;
+}
+
+.philosophy-label {
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 40px;
+  opacity: 0.7;
+}
+
+.philosophy-statement {
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 300;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.85);
+  letter-spacing: -0.01em;
+}
+
+.philosophy-statement strong {
+  font-weight: 700;
+  color: var(--white);
+}
+
+.philosophy-statement .gold-word {
+  color: var(--gold);
+  font-weight: 500;
+}
+
+.philosophy-sub {
+  margin-top: 48px;
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.08em;
+  line-height: 1.8;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ── Origin Section ── */
+.origin {
+  padding: 80px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.origin-inner {
+  max-width: 600px;
+  text-align: center;
+}
+
+.origin-name {
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 20px;
+}
+
+.origin-meaning {
+  font-size: clamp(18px, 2.5vw, 26px);
+  font-weight: 300;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.7;
+}
+
+.origin-meaning .zahra {
+  color: var(--gold);
+  font-weight: 500;
+}
+
+/* ── Products Section ── */
+.products {
+  min-height: 100vh;
+  padding: 120px 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.products-header {
+  text-align: center;
+  margin-bottom: 72px;
+}
+
+.products-header h2 {
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--white);
+}
+
+.products-header p {
+  font-size: 15px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.4);
+  margin-top: 16px;
+  letter-spacing: 0.04em;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  max-width: 900px;
+  width: 100%;
+}
+
+.product-card {
+  position: relative;
+  border-radius: 20px;
+  padding: 40px 36px;
+  overflow: hidden;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: transform 0.4s ease, border-color 0.4s ease;
+  cursor: default;
+}
+
+.product-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  z-index: -1;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(203,161,53,0.25);
+}
+
+.card-sabi {
+  background: rgba(61,26,140,0.35);
+}
+
+.card-sabi:hover {
+  box-shadow: 0 20px 60px rgba(61,26,140,0.4), 0 0 40px rgba(203,161,53,0.08);
+}
+
+.card-build {
+  background: rgba(13,122,107,0.3);
+}
+
+.card-build:hover {
+  box-shadow: 0 20px 60px rgba(13,122,107,0.4), 0 0 40px rgba(203,161,53,0.08);
+}
+
+.card-glow {
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+.card-sabi .card-glow { background: var(--purple); }
+.card-build .card-glow { background: var(--teal); }
+
+.card-stamp {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 24px;
+}
+
+.card-name {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.card-line {
+  font-size: 13px;
+  color: var(--gold);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  margin-bottom: 24px;
+}
+
+.card-desc {
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.7;
+}
+
+.card-status {
+  display: inline-block;
+  margin-top: 28px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 5px 14px;
+}
+
+/* ── Footer ── */
+footer {
+  padding: 80px 48px 60px;
+  text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  position: relative;
+}
+
+.footer-node {
+  width: 32px;
+  height: 32px;
+  color: var(--gold);
+  opacity: 0.5;
+  margin: 0 auto 24px;
+  display: block;
+}
+
+.footer-name {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 12px;
+}
+
+.footer-tag {
+  font-size: 12px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.18);
+  letter-spacing: 0.06em;
+}
+
+.footer-tag em {
+  font-style: normal;
+  color: var(--gold);
+  opacity: 0.5;
+}
+
+/* ── Light rays ── */
+.light-rays {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 60vh;
+  pointer-events: none;
+  z-index: 1;
+  background: 
+    radial-gradient(ellipse 2px 300px at 20% 0%, rgba(203,161,53,0.04) 0%, transparent 100%),
+    radial-gradient(ellipse 2px 400px at 50% 0%, rgba(203,161,53,0.06) 0%, transparent 100%),
+    radial-gradient(ellipse 2px 250px at 75% 0%, rgba(203,161,53,0.03) 0%, transparent 100%),
+    radial-gradient(ellipse 2px 350px at 90% 0%, rgba(203,161,53,0.04) 0%, transparent 100%);
+  animation: rayDrift 12s ease-in-out infinite alternate;
+}
+
+@keyframes rayDrift {
+  from { transform: skewX(-1deg); opacity: 0.6; }
+  to { transform: skewX(1deg); opacity: 1; }
+}
+
+/* ── Responsive ── */
+@media (max-width: 680px) {
+  nav { padding: 20px 24px; }
+  .nav-links { display: none; }
+  .hero { padding: 100px 24px 60px; }
+  .philosophy { padding: 80px 24px; }
+  .products { padding: 80px 24px; }
+  .products-grid { grid-template-columns: 1fr; }
+  footer { padding: 60px 24px; }
+  .depth-divider { padding: 0 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Light rays overlay -->
+<div class="light-rays"></div>
+
+<!-- WebGL caustic background -->
+<canvas id="caustic-canvas"></canvas>
+
+<!-- Bubble canvas -->
+<canvas id="bubble-canvas"></canvas>
+
+<!-- Site content -->
+<div class="site">
+
+  <!-- Nav -->
+  <nav>
+    <a href="#" class="nav-mark">
+      <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0" y="0" width="18" height="18" rx="4" fill="currentColor"/>
+        <rect x="42" y="0" width="18" height="18" rx="4" fill="currentColor"/>
+        <rect x="0" y="42" width="18" height="18" rx="4" fill="currentColor"/>
+        <rect x="42" y="42" width="18" height="18" rx="4" fill="currentColor"/>
+        <rect x="18" y="7" width="24" height="4" fill="currentColor"/>
+        <rect x="18" y="49" width="24" height="4" fill="currentColor"/>
+        <rect x="7" y="18" width="4" height="24" fill="currentColor"/>
+        <rect x="49" y="18" width="4" height="24" fill="currentColor"/>
+      </svg>
+      <span class="nav-brand">Xahra</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#philosophy">Philosophy</a></li>
+      <li><a href="#products">Products</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" id="home">
+    <div class="hero-depth-line"></div>
+
+    <svg class="hero-node" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="18" height="18" rx="4" fill="currentColor"/>
+      <rect x="42" y="0" width="18" height="18" rx="4" fill="currentColor"/>
+      <rect x="0" y="42" width="18" height="18" rx="4" fill="currentColor"/>
+      <rect x="42" y="42" width="18" height="18" rx="4" fill="currentColor"/>
+      <rect x="18" y="7" width="24" height="4" fill="currentColor"/>
+      <rect x="18" y="49" width="24" height="4" fill="currentColor"/>
+      <rect x="7" y="18" width="4" height="24" fill="currentColor"/>
+      <rect x="49" y="18" width="4" height="24" fill="currentColor"/>
+    </svg>
+
+    <p class="hero-eyebrow">A quiet, purposeful studio</p>
+    <h1 class="hero-title">Xahra</h1>
+    <p class="hero-tagline">Unwavering resilience and growth.<br><em>One pace at a time.</em></p>
+
+    <div class="scroll-cue">
+      <span>Descend</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- Depth divider -->
+  <div class="depth-divider">
+    <span class="depth-label">— 20m</span>
+  </div>
+
+  <!-- Philosophy -->
+  <section class="philosophy" id="philosophy">
+    <div class="philosophy-inner">
+      <p class="philosophy-label">What we stand for</p>
+      <p class="philosophy-statement">
+        It's okay to <strong>break.</strong><br>
+        It's okay to <strong>stop.</strong><br>
+        It's okay to get <strong>stuck.</strong><br><br>
+        <span class="gold-word">Just keep going —</span><br>
+        one pace at a time.
+      </p>
+      <p class="philosophy-sub">
+        Xahra is named for Zahra — light, radiance, to blossom. 
+        Every product we build carries that meaning. 
+        Quietly. Intentionally. Without rushing.
+      </p>
+    </div>
+  </section>
+
+  <!-- Origin -->
+  <div class="depth-divider">
+    <span class="depth-label">— 40m</span>
+  </div>
+
+  <div class="origin">
+    <div class="origin-inner">
+      <p class="origin-name">On the name</p>
+      <p class="origin-meaning">
+        <span class="zahra">Zahra</span> — Arabic for flower, light, radiance.<br>
+        <span class="zahra">Fatimah</span> — leadership, trustworthiness, nurturing strength.<br><br>
+        The brand is rooted in this meaning. Not as decoration — as direction.
+      </p>
+    </div>
+  </div>
+
+  <!-- Depth divider -->
+  <div class="depth-divider">
+    <span class="depth-label">— 60m</span>
+  </div>
+
+  <!-- Products -->
+  <section class="products" id="products">
+    <div class="products-header">
+      <h2>What we build</h2>
+      <p>Each product has its own world. Gold runs through all of them.</p>
+    </div>
+
+    <div class="products-grid">
+
+      <div class="product-card card-sabi">
+        <div class="card-glow"></div>
+        <p class="card-stamp">by Xahra</p>
+        <h3 class="card-name">Sabi</h3>
+        <p class="card-line">Know your money.</p>
+        <p class="card-desc">
+          A personal finance app built Nigeria-first. Reads your bank SMS alerts automatically so tracking your spending never requires effort.
+        </p>
+        <span class="card-status">In development</span>
+      </div>
+
+      <div class="product-card card-build">
+        <div class="card-glow"></div>
+        <p class="card-stamp">by Xahra</p>
+        <h3 class="card-name">Build</h3>
+        <p class="card-line">One pace at a time.</p>
+        <p class="card-desc">
+          A faceless inspirational content brand. Honest, quiet process content about building something from nothing — for people in the middle of it.
+        </p>
+        <span class="card-status">Coming soon</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Depth divider -->
+  <div class="depth-divider">
+    <span class="depth-label">— 100m</span>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <svg class="footer-node" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="18" height="18" rx="4" fill="currentColor"/>
+      <rect x="42" y="0" width="18" height="18" rx="4" fill="currentColor"/>
+      <rect x="0" y="42" width="18" height="18" rx="4" fill="currentColor"/>
+      <rect x="42" y="42" width="18" height="18" rx="4" fill="currentColor"/>
+      <rect x="18" y="7" width="24" height="4" fill="currentColor"/>
+      <rect x="18" y="49" width="24" height="4" fill="currentColor"/>
+      <rect x="7" y="18" width="4" height="24" fill="currentColor"/>
+      <rect x="49" y="18" width="4" height="24" fill="currentColor"/>
+    </svg>
+    <p class="footer-name">Xahra</p>
+    <p class="footer-tag">A quiet, purposeful studio. <em>One pace at a time.</em></p>
+  </footer>
+
+</div>
+
+<script>
+// ── WebGL Caustic Light Shader ──────────────────────────────────────────
+
+const canvas = document.getElementById('caustic-canvas');
+const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+
+const vsSource = `
+  attribute vec2 aPos;
+  void main() {
+    gl_Position = vec4(aPos, 0.0, 1.0);
+  }
+`;
+
+const fsSource = `
+  precision mediump float;
+  uniform float uTime;
+  uniform vec2 uRes;
+
+  vec2 hash2(vec2 p) {
+    p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)));
+    return -1.0 + 2.0 * fract(sin(p) * 43758.5453);
+  }
+
+  float voronoi(vec2 p, float t) {
+    vec2 n = floor(p);
+    vec2 f = fract(p);
+    float d1 = 9.0;
+    float d2 = 9.0;
+    for(int x = -2; x <= 2; x++) {
+      for(int y = -2; y <= 2; y++) {
+        vec2 g = vec2(float(x), float(y));
+        vec2 o = hash2(n + g);
+        o = 0.5 + 0.5 * sin(t + 6.283 * o);
+        vec2 r = g + o - f;
+        float d = dot(r, r);
+        if(d < d1) { d2 = d1; d1 = d; }
+        else if(d < d2) { d2 = d; }
+      }
+    }
+    return sqrt(d2) - sqrt(d1);
+  }
+
+  void main() {
+    vec2 uv = gl_FragCoord.xy / uRes;
+    float aspect = uRes.x / uRes.y;
+    vec2 st = vec2(uv.x * aspect, uv.y);
+
+    // Deep water base color
+    vec3 deep = vec3(0.002, 0.004, 0.13);
+    vec3 mid  = vec3(0.004, 0.008, 0.2);
+
+    // Multi-scale caustics
+    float c1 = voronoi(st * 2.8, uTime * 0.35);
+    float c2 = voronoi(st * 5.5 + vec2(1.7, 2.3), uTime * 0.5);
+    float c3 = voronoi(st * 10.0 + vec2(3.1, 1.4), uTime * 0.25);
+
+    float caustic = c1 * 0.55 + c2 * 0.3 + c3 * 0.15;
+    caustic = pow(max(caustic, 0.0), 2.2);
+
+    // Gold caustic color
+    vec3 goldLight = vec3(0.796, 0.631, 0.208);
+    vec3 whiteGlow = vec3(1.0, 0.97, 0.88);
+
+    // Depth gradient — darker toward bottom
+    vec3 color = mix(mid, deep, uv.y * 0.7);
+    color += goldLight * caustic * 0.22;
+    color += whiteGlow * caustic * caustic * 0.12;
+
+    // Gentle surface brightness at top
+    float surface = (1.0 - uv.y) * (1.0 - uv.y) * 0.06;
+    color += vec3(0.1, 0.15, 0.3) * surface;
+
+    // Vignette
+    vec2 vig = uv - 0.5;
+    vig.x *= aspect;
+    float v = 1.0 - dot(vig, vig) * 0.7;
+    color *= clamp(v, 0.0, 1.0);
+
+    gl_FragColor = vec4(color, 1.0);
+  }
+`;
+
+function createShader(gl, type, src) {
+  const s = gl.createShader(type);
+  gl.shaderSource(s, src);
+  gl.compileShader(s);
+  return s;
+}
+
+function initGL() {
+  if (!gl) return;
+
+  const vs = createShader(gl, gl.VERTEX_SHADER, vsSource);
+  const fs = createShader(gl, gl.FRAGMENT_SHADER, fsSource);
+  const prog = gl.createProgram();
+  gl.attachShader(prog, vs);
+  gl.attachShader(prog, fs);
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+
+  const quad = new Float32Array([-1,-1, 1,-1, -1,1, 1,1]);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, quad, gl.STATIC_DRAW);
+
+  const aPos = gl.getAttribLocation(prog, 'aPos');
+  gl.enableVertexAttribArray(aPos);
+  gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+  const uTime = gl.getUniformLocation(prog, 'uTime');
+  const uRes  = gl.getUniformLocation(prog, 'uRes');
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+    gl.viewport(0, 0, canvas.width, canvas.height);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+
+  let t = 0;
+  function draw(ts) {
+    t = ts * 0.001;
+    gl.uniform1f(uTime, t);
+    gl.uniform2f(uRes, canvas.width, canvas.height);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+}
+
+initGL();
+
+// ── Bubble Particles ────────────────────────────────────────────────────
+
+const bCanvas = document.getElementById('bubble-canvas');
+const ctx = bCanvas.getContext('2d');
+
+function resizeBubbleCanvas() {
+  bCanvas.width  = window.innerWidth;
+  bCanvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeBubbleCanvas);
+resizeBubbleCanvas();
+
+const BUBBLE_COUNT = 28;
+const bubbles = [];
+
+for (let i = 0; i < BUBBLE_COUNT; i++) {
+  bubbles.push({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight + window.innerHeight,
+    r: Math.random() * 3.5 + 1,
+    speed: Math.random() * 0.4 + 0.15,
+    wobble: Math.random() * Math.PI * 2,
+    wobbleSpeed: Math.random() * 0.02 + 0.01,
+    opacity: Math.random() * 0.12 + 0.04,
+  });
+}
+
+function drawBubbles() {
+  ctx.clearRect(0, 0, bCanvas.width, bCanvas.height);
+
+  bubbles.forEach(b => {
+    b.y -= b.speed;
+    b.wobble += b.wobbleSpeed;
+    b.x += Math.sin(b.wobble) * 0.4;
+
+    if (b.y < -20) {
+      b.y = bCanvas.height + 20;
+      b.x = Math.random() * bCanvas.width;
+    }
+
+    const fade = Math.min(1, (bCanvas.height - b.y) / 200);
+    ctx.beginPath();
+    ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+    ctx.strokeStyle = `rgba(203, 161, 53, ${b.opacity * fade})`;
+    ctx.lineWidth = 0.8;
+    ctx.stroke();
+
+    // Highlight
+    ctx.beginPath();
+    ctx.arc(b.x - b.r * 0.3, b.y - b.r * 0.3, b.r * 0.25, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255, 255, 255, ${b.opacity * fade * 0.5})`;
+    ctx.fill();
+  });
+
+  requestAnimationFrame(drawBubbles);
+}
+
+drawBubbles();
+
+// ── Scroll-triggered fade-ins ──────────────────────────────────────────
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.philosophy-inner, .products-header, .product-card, .origin-inner').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(30px)';
+  el.style.transition = 'opacity 0.9s ease, transform 0.9s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
