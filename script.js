@@ -114,7 +114,7 @@ const TRACK_DATA = {
     certifications: [
       { title: "ServiceNow Certified System Administrator (CSA)", issuer: "ServiceNow (In View)", verify: "" },
       { title: "ServiceNow Certified Application Developer (CAD)", issuer: "ServiceNow (In View)", verify: "" },
-      { title: "ServiceNow Certified Implementation Specialist - Device Federation (CIS-DF) [CSDM & CSDB]", issuer: "ServiceNow (In View)", verify: "" },
+      { title: "ServiceNow Certified Implementation Specialist - Device Federation (CIS-DF) [CMDB & CSDM]", issuer: "ServiceNow (Aug 2026)", verify: "" },
       { title: "CompTIA A+", issuer: "CompTIA (In View)", verify: "" },
       { title: "Microsoft Certified: Azure Fundamentals (AZ-900)", issuer: "Microsoft Learn (In View)", verify: "" },
       { title: "No-Code Machine Learning Certification", issuer: "3MTT Nigeria (2026)", verify: "" },
@@ -124,7 +124,7 @@ const TRACK_DATA = {
       { title: "Certificate of Completion: Agile Foundations", issuer: "PMI Certification (Dec 2025)", verify: "" },
       { title: "Microsoft Azure AI Fundamentals: Generative AI", issuer: "Microsoft Learn (Dec 2023)", verify: "" },
       { title: "Microsoft Azure Fundamentals", issuer: "Microsoft Learn (Jun 2024)", verify: "" },
-      { title: "Associate Google Cloud Certification (In View)", issuer: "Google (In View - Jul 2026)", verify: "" },
+      { title: "Google Cloud Associate Cloud Engineer (ACE)", issuer: "Google (Aug 2026)", verify: "" },
       { title: "Power BI Learning Track (7 Certifications)", issuer: "Microsoft Learn", verify: "" }
     ]
   },
@@ -318,7 +318,7 @@ const TRACK_DATA = {
     certifications: [
       { title: "ServiceNow Certified System Administrator (CSA)", issuer: "ServiceNow (In View)", verify: "" },
       { title: "ServiceNow Certified Application Developer (CAD)", issuer: "ServiceNow (In View)", verify: "" },
-      { title: "ServiceNow Certified Implementation Specialist - Device Federation (CIS-DF) [CSDM & CSDB]", issuer: "ServiceNow (In View)", verify: "" },
+      { title: "ServiceNow Certified Implementation Specialist - Device Federation (CIS-DF) [CMDB & CSDM]", issuer: "ServiceNow (Aug 2026)", verify: "" },
       { title: "CompTIA A+", issuer: "CompTIA (In View)", verify: "" },
       { title: "Microsoft Certified: Azure Fundamentals (AZ-900)", issuer: "Microsoft Learn (In View)", verify: "" },
       { title: "ServiceNow IT Leadership Professional Certificate", issuer: "ServiceNow / LinkedIn Learning (May 2026)", verify: "" },
@@ -327,7 +327,7 @@ const TRACK_DATA = {
       { title: "Certificate of Completion: Agile Foundations", issuer: "PMI Certification (Dec 2025)", verify: "" },
       { title: "Microsoft Azure AI Foundations", issuer: "Microsoft Learn (In View - Jun 2026)", verify: "" },
       { title: "Microsoft Azure Fundamentals", issuer: "Microsoft Learn (Jun 2024)", verify: "" },
-      { title: "Associate Google Cloud Certification", issuer: "Google (In View - Jul 2026)", verify: "" },
+      { title: "Google Cloud Associate Cloud Engineer (ACE)", issuer: "Google (Aug 2026)", verify: "" },
       { title: "Google Cloud Foundations", issuer: "GDSC Sub-Saharan Africa (Mar 2023)", verify: "" },
       { title: "Career Essentials in Software Development", issuer: "Microsoft Learn (Dec 2023)", verify: "" },
       { title: "Digital Transformation and Management", issuer: "Microsoft (2023)", verify: "" },
