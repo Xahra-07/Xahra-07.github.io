@@ -2,7 +2,7 @@
 const TRACK_DATA = {
   all: {
     title: "Xahra",
-    subtitle: "T-Shaped Tech Creator",
+    subtitle: "+2348057626436 | fatimahismaila12@gmail.com | Abuja, Nigeria | linkedin.com/in/fatimah-ismaila",
     tagline: "Bridging the gap between intelligent automation workflows, visual design systems, and cloud pipelines.",
     experience: [
       {
@@ -70,6 +70,11 @@ const TRACK_DATA = {
       }
     ],
     projects: [
+      {
+        title: "Campus Check (ServiceNow Application)",
+        org: "Independent Project",
+        desc: "Designed and engineered an end-to-end ServiceNow application for centralized campus issue reporting, mapping multi-tier workflows using Flow Designer and Business Rules to automate issue creation, investigation, and resolution."
+      },
       {
         title: "Facilitator - Building Products with AI",
         org: "DesignIT Africa",
