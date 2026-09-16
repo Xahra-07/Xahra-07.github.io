@@ -2,8 +2,8 @@
 const TRACK_DATA = {
   all: {
     title: "Xahra",
-    subtitle: "+2348057626436 | fatimahismaila12@gmail.com | Abuja, Nigeria | linkedin.com/in/fatimah-ismaila",
-    tagline: "Bridging the gap between intelligent automation workflows, visual design systems, and cloud pipelines.",
+    subtitle: "Bridging the gap between intelligent automation workflows, visual design systems, and cloud pipelines.",
+    tagline: "One pace at a time.",
     experience: [
       {
         role: "IT Administrator",
