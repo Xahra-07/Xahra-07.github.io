@@ -139,10 +139,11 @@
       width: auto;
       object-fit: contain;
       transition: var(--transition-spring);
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
     }
     .brand-logo-img:hover {
       transform: scale(1.06);
-      filter: drop-shadow(0 0 10px rgba(203, 161, 53, 0.4));
+      filter: drop-shadow(0 0 14px rgba(203, 161, 53, 0.5));
     }
     .nav-links {
       display: flex;
@@ -396,6 +397,15 @@
       flex-wrap: wrap;
       gap: 6px;
       margin-top: 14px;
+    }
+    .volume-annotation {
+      font-size: 11px;
+      font-style: italic;
+      color: var(--gold-bright);
+      opacity: 0.85;
+      display: block;
+      margin-bottom: 4px;
+      letter-spacing: 0.02em;
     }
     .card-mini-tag {
       font-size: 10.5px;
@@ -843,7 +853,7 @@
     <!-- Nav Header -->
     <nav>
       <a href="#" class="brand-mark">
-        <img src="logo.png" alt="Xahra Logo" class="brand-logo-img">
+        <img src="logo-dark.png" alt="Xahra Logo" class="brand-logo-img">
       </a>
       <ul class="nav-links">
         <li><a href="#about">About</a></li>
@@ -895,10 +905,11 @@
         <!-- Volume 1: Cloud & Systems -->
         <div class="book-card card-systems">
           <div class="card-top">
-            <span class="card-category">VOL. I // CLOUD &amp; SYSTEMS</span>
+            <span class="card-category">VOL. I // UNDER THE HOOD</span>
             <div class="card-seal">GCP</div>
           </div>
           <div>
+            <span class="volume-annotation">/* The heavy lifting */</span>
             <h3 class="card-title display-font">Cloud &amp; DevOps</h3>
             <p class="card-meta">
               Google Cloud Associate Cloud Engineer infrastructure, containerized Docker workflows, Linux administration, and network routing integrity.
@@ -914,10 +925,11 @@
         <!-- Volume 2: ServiceNow Architecture -->
         <div class="book-card card-servicenow">
           <div class="card-top">
-            <span class="card-category">VOL. II // SERVICENOW</span>
+            <span class="card-category">VOL. II // ENTERPRISE BACKBONE</span>
             <div class="card-seal">NOW</div>
           </div>
           <div>
+            <span class="volume-annotation">/* Where chaos gets tamed */</span>
             <h3 class="card-title display-font">ServiceNow Platform</h3>
             <p class="card-meta">
               ServiceNow CIS-Device Federation (CMDB &amp; CSDM), CSA &amp; CAD (In View), Flow Designer automations, Business Rules, and ITSM.
@@ -933,10 +945,11 @@
         <!-- Volume 3: Strategic UX Consulting (Front) -->
         <div class="book-card card-ux">
           <div class="card-top">
-            <span class="card-category" style="color: #000424;">VOL. III // STRATEGIC UX</span>
+            <span class="card-category" style="color: #000424;">VOL. III // HUMAN FACTOR</span>
             <div class="card-seal" style="background: rgba(0,0,0,0.15); color: #000424; border-color: rgba(0,0,0,0.25);">UX</div>
           </div>
           <div>
+            <span class="volume-annotation" style="color: rgba(0, 4, 36, 0.75);">/* How it actually feels */</span>
             <h3 class="card-title display-font" style="color: #000424;">UX Consultant</h3>
             <p class="card-meta" style="color: rgba(0,4,36,0.88);">
               Advising on high-level user journeys, information architecture, and design governance frameworks without hands-on pixel pushing.
@@ -1299,11 +1312,11 @@
 
       <div class="labs-grid">
         <div class="lab-volume">
-          <div class="lab-tag">BY XAHRA // STEALTH APP</div>
+          <div class="lab-tag">BY XAHRA // APP</div>
           <h3 class="lab-title display-font">Project Aurora</h3>
           <div class="lab-slogan">Coming soon.</div>
           <p class="lab-desc">
-            An exploratory digital application currently in architecture and early concept modeling. Designed to bridge automated backend workflows with an intuitive, human-centered mobile interface.
+            An exploratory digital application currently in architecture and early concept modeling. Currently being designed with an intuitive, human-centered mobile interface.
           </p>
         </div>
 
@@ -1424,7 +1437,8 @@
         <a href="https://x.com/Xahra_07" target="_blank" rel="noopener">X (Twitter)</a>
         <a href="mailto:fatimahismaila12@gmail.com">Email</a>
       </div>
-      <p>&copy; 2026 Fatimah Ismaila (Xahra). All rights reserved. One pace at a time.</p>
+      <p style="margin-bottom: 6px;">&copy; 2026 Fatimah Ismaila (Xahra). All rights reserved. One pace at a time.</p>
+      <p style="font-size: 11px; opacity: 0.55; font-style: italic;">Printed &amp; bound digitally with modern material maximalism. No pixels were pushed in the making of this consulting brand.</p>
     </footer>
 
   </div>
