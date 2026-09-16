@@ -82,52 +82,14 @@
       z-index: 10;
     }
 
-    /* Top Status Bar */
-    .status-bar {
-      background: rgba(0, 4, 32, 0.88);
-      border-bottom: 1px solid var(--border-subtle);
-      backdrop-filter: blur(14px);
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      padding: 10px 0;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .status-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    .status-pill {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .pulse-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--gold);
-      box-shadow: 0 0 10px var(--gold);
-      animation: pulse-dot-anim 2s infinite ease-in-out;
-    }
-    @keyframes pulse-dot-anim {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.8); }
-    }
-
     /* Navigation */
     nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 26px 0;
+      padding: 24px 0;
       border-bottom: 1px solid var(--border-subtle);
+      position: relative;
     }
     .brand-mark {
       display: inline-flex;
@@ -158,6 +120,13 @@
       transition: color 0.3s;
     }
     .nav-links a:hover { color: var(--gold-bright); }
+
+    .nav-actions-desktop {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
     .btn-contact {
       background: var(--gold);
       color: var(--navy-night);
@@ -177,6 +146,115 @@
       border-color: var(--white);
       box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
       transform: translateY(-2px);
+    }
+
+    /* Mobile Hamburger Trigger (Hidden on Desktop) */
+    .mobile-nav-toggle {
+      display: none;
+      background: rgba(203, 161, 53, 0.12);
+      border: 1px solid var(--gold-border);
+      border-radius: 12px;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold-bright);
+      transition: var(--transition-spring);
+      z-index: 1002;
+    }
+    .mobile-nav-toggle:hover {
+      background: rgba(203, 161, 53, 0.22);
+      border-color: var(--gold);
+    }
+    .hamburger-icon {
+      width: 22px;
+      height: 16px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .hamburger-icon span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background-color: currentColor;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    /* Mobile Popup Modal Menu (Modern Material Maximalist Drawer/Popup) */
+    .mobile-menu-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 4, 32, 0.8);
+      backdrop-filter: blur(12px);
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s ease, visibility 0.4s;
+    }
+    .mobile-menu-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .mobile-popup-card {
+      position: fixed;
+      top: 90px;
+      left: 20px;
+      right: 20px;
+      background: linear-gradient(160deg, #020b40 0%, #010424 100%);
+      border: 2px solid var(--gold);
+      border-radius: 24px;
+      padding: 36px 28px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 35px var(--gold-glow);
+      z-index: 1001;
+      transform: translateY(-20px) scale(0.95);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .mobile-menu-overlay.active + .mobile-popup-card,
+    .mobile-popup-card.active {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .mobile-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .mobile-links a {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      transition: all 0.2s;
+    }
+    .mobile-links a:hover, .mobile-links a:active {
+      background: rgba(203, 161, 53, 0.15);
+      border-color: var(--gold);
+      color: var(--gold-bright);
+    }
+    .mobile-links a span.arr {
+      color: var(--gold);
+      font-size: 16px;
     }
 
     /* Hero */
@@ -828,25 +906,45 @@
       .deck-viewport:hover .card-servicenow { transform: rotate(10deg) translate(80px, -15px) scale(0.96); }
       .deck-viewport:hover .card-ux { transform: rotate(0deg) translateY(45px) scale(1.02); }
     }
+
+    /* Mobile specific rules: strictly <= 860px */
+    @media (max-width: 860px) {
+      .nav-links, .nav-actions-desktop {
+        display: none !important;
+      }
+      .mobile-nav-toggle {
+        display: inline-flex !important;
+      }
+      .container {
+        padding: 0 20px;
+      }
+      .hero-title {
+        font-size: clamp(38px, 9vw, 56px);
+      }
+      .hero-metrics {
+        flex-direction: column;
+        gap: 16px;
+      }
+      .deck-viewport {
+        height: 400px;
+      }
+      .book-card {
+        width: 290px;
+        min-height: 330px;
+        padding: 24px 20px 24px 30px;
+      }
+      .deck-viewport:hover .card-systems { transform: rotate(-8deg) translate(-35px, -20px) scale(0.95); }
+      .deck-viewport:hover .card-servicenow { transform: rotate(8deg) translate(35px, -10px) scale(0.95); }
+      .deck-viewport:hover .card-ux { transform: rotate(0deg) translateY(35px) scale(1); }
+      .creds-grid { grid-template-columns: 1fr; }
+      .featured-volume { padding: 30px 24px; }
+    }
   </style>
 </head>
 <body>
 
   <div class="ambient-bg"></div>
   <div class="grid-mesh"></div>
-
-  <!-- Status Bar -->
-  <div class="status-bar">
-    <div class="container status-inner">
-      <div class="status-pill">
-        <span class="pulse-dot"></span>
-        <span>Systems Engineer &amp; Strategic UX Consultant</span>
-      </div>
-      <div class="status-pill">
-        <span>ServiceNow (CIS-DF, CSA, CAD) · GCP ACE · MSc Digital Transformation</span>
-      </div>
-    </div>
-  </div>
 
   <div class="container">
 
@@ -855,6 +953,8 @@
       <a href="#" class="brand-mark">
         <img src="logo-dark.png" alt="Xahra Logo" class="brand-logo-img">
       </a>
+      
+      <!-- Desktop Nav Links -->
       <ul class="nav-links">
         <li><a href="#about">About</a></li>
         <li><a href="#disciplines">What I Do</a></li>
@@ -862,11 +962,43 @@
         <li><a href="#experience">Experience</a></li>
         <li><a href="#credentials">Education</a></li>
       </ul>
-      <a href="mailto:fatimahismaila12@gmail.com" class="btn-contact">
-        <span>Get in Touch</span>
+      
+      <div class="nav-actions-desktop">
+        <a href="mailto:fatimahismaila12@gmail.com" class="btn-contact">
+          <span>Get in Touch</span>
+          <span>→</span>
+        </a>
+      </div>
+
+      <!-- Mobile Hamburger Button (Visible only on mobile <= 860px) -->
+      <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Open Navigation Menu">
+        <div class="hamburger-icon">
+          <span class="bar-top"></span>
+          <span class="bar-mid"></span>
+          <span class="bar-bot"></span>
+        </div>
+      </button>
+    </nav>
+
+    <!-- Mobile Popup Modal Menu (Modern Material Maximalist Overlay) -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+    <div class="mobile-popup-card" id="mobilePopupCard">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 16px;">
+        <img src="logo-dark.png" alt="Xahra Logo" style="height: 30px; width: auto;">
+        <button id="closeMobileMenu" style="background: none; border: none; color: var(--gold-bright); font-size: 24px; cursor: pointer; padding: 4px 8px;">✕</button>
+      </div>
+      <ul class="mobile-links">
+        <li><a href="#about" class="mobile-link-item"><span>About</span><span class="arr">→</span></a></li>
+        <li><a href="#disciplines" class="mobile-link-item"><span>What I Do</span><span class="arr">→</span></a></li>
+        <li><a href="#projects" class="mobile-link-item"><span>Projects</span><span class="arr">→</span></a></li>
+        <li><a href="#experience" class="mobile-link-item"><span>Experience</span><span class="arr">→</span></a></li>
+        <li><a href="#credentials" class="mobile-link-item"><span>Education</span><span class="arr">→</span></a></li>
+      </ul>
+      <a href="mailto:fatimahismaila12@gmail.com" class="btn-contact" style="justify-content: center; padding: 14px; font-size: 15px;">
+        <span>Get in Touch Directly</span>
         <span>→</span>
       </a>
-    </nav>
+    </div>
 
     <!-- Hero Section -->
     <section class="hero" id="about">
@@ -1441,7 +1573,38 @@
       <p style="font-size: 11px; opacity: 0.55; font-style: italic;">Printed &amp; bound digitally with modern material maximalism. No pixels were pushed in the making of this consulting brand.</p>
     </footer>
 
-  </div>
+  <!-- Mobile Navigation Interaction Script -->
+  <script>
+    const mobileNavToggle = document.getElementById('mobileNavToggle');
+    const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+    const mobilePopupCard = document.getElementById('mobilePopupCard');
+    const closeMobileMenu = document.getElementById('closeMobileMenu');
+    const mobileLinkItems = document.querySelectorAll('.mobile-link-item');
 
+    function openMobileMenu() {
+      mobileMenuOverlay.classList.add('active');
+      mobilePopupCard.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMobileMenuFunc() {
+      mobileMenuOverlay.classList.remove('active');
+      mobilePopupCard.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    if (mobileNavToggle) {
+      mobileNavToggle.addEventListener('click', openMobileMenu);
+    }
+    if (closeMobileMenu) {
+      closeMobileMenu.addEventListener('click', closeMobileMenuFunc);
+    }
+    if (mobileMenuOverlay) {
+      mobileMenuOverlay.addEventListener('click', closeMobileMenuFunc);
+    }
+    mobileLinkItems.forEach(link => {
+      link.addEventListener('click', closeMobileMenuFunc);
+    });
+  </script>
 </body>
 </html>
